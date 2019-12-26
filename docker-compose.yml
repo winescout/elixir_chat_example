@@ -1,0 +1,29 @@
+version: '2.1'
+services:
+  web:
+    build: .
+    image: "${REGISTRY_HOST}${REGISTRY_URI}:${TAG:-master}"
+    volumes:
+      - .:/usr/src/webapp
+    stdin_open: true
+    tty: true
+    env_file:
+      - .env
+      - .env.development
+    ports:
+      - "${DEV_PORT}"
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres
+    env_file:
+      - .env
+      - .env.development
+    ports:
+      - "5432"
+    volumes:
+      - 'postgres:/var/lib/postgresql/data'
+volumes:
+  postgres:
+
+
