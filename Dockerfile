@@ -1,6 +1,6 @@
 FROM elixir:1.9
 
-RUN apt-get update && apt-get install -y inotify-tools
+RUN apt-get update && apt-get install -y inotify-tools nodejs npm
 
 ENV APP_HOME /usr/src/webapp
 RUN mkdir -p $APP_HOME
@@ -13,5 +13,6 @@ COPY . .
 RUN mix deps.clean --all
 RUN mix deps.get
 RUN mix local.rebar --force
+RUN cd assets && npm install
 
 CMD ["mix" , "do", "deps.get", ",", "phx.server"]
